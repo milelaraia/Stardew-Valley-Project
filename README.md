@@ -1,5 +1,7 @@
 # Projeto de Banco de Dados - Stardew Valley
 
+### Dupla: Giuliana Torres Batistella - 491
+
 Este projeto consiste no **desenho e modelagem de um banco de dados relacional** inspirado no jogo de RPG **Stardew Valley**.  
 O objetivo é armazenar informações sobre jogadores, aldeões, animais, cultivos, habilidades e interações do universo do jogo, permitindo análises, registros de progresso e expansão de funcionalidades.
 
