@@ -86,9 +86,9 @@ O banco de dados foi projetado para englobar os seguintes aspectos do jogo:
 
 ## Relacionamentos (Resumo)
 
-- `Jogador` 1—N `Inventário`  
+- `Jogador` 1—1 `Inventário`  
 - `Inventário` 1—N `Itens`  
-- `Jogador` N—N `Aldeões` (via `Amizade`)  
+- `Jogador` 1—N `Aldeões` (via `Amizade`)  
 - `Jogador` 1—N `Animais`  
 - `Lavouras Geral` N—N `Estações`  
 - `Jogador` 1—N `Habilidades`  
