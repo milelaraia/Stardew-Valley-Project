@@ -11,9 +11,11 @@ public class Jogador {
     private String genero;
     private int energia;
     private int saude;
-    private Inventario inventario;
 
-    public Jogador(int idJogador, String nome, String nome_fazenda, String animal_favorito, String coisa_favorita, String genero, int energia, int saude, Inventario inventario) {
+    //Fk
+    private int idInventario;
+
+    public Jogador(int idJogador, String nome, String nome_fazenda, String animal_favorito, String coisa_favorita, String genero, int energia, int saude, int idInventario) {
         this.idJogador = idJogador;
         this.nome = nome;
         this.nome_fazenda = nome_fazenda;
@@ -22,7 +24,7 @@ public class Jogador {
         this.genero = genero;
         this.energia = energia;
         this.saude = saude;
-        this.inventario = inventario;
+        this.idInventario = idInventario;
     }
 
     public int getIdJogador() {
@@ -89,11 +91,11 @@ public class Jogador {
         this.saude = saude;
     }
 
-    public Inventario getInventario() {
-        return inventario;
+    public int getInventario() {
+        return idInventario;
     }
 
-    public void setInventario(Inventario inventario) {
-        this.inventario = inventario;
+    public void setInventario(int inventario) {
+        this.idInventario = inventario;
     }
 }

@@ -7,18 +7,25 @@ public class Habilidades {
     private int coleta;
     private int pesca;
     private int combate;
-    private Inventario inventario;
 
-    public Habilidades(int idHabilidades, int cultivo, int mineracao, int coleta, int pesca, int combate, Inventario inventario) {
+    // Fk's
+
+    private int idInventario;
+    private int idJogador;
+
+    //construtor
+    public Habilidades(int idHabilidades, int cultivo, int mineracao, int coleta, int pesca, int combate, int idInventario, int idJogador) {
         this.idHabilidades = idHabilidades;
         this.cultivo = cultivo;
         this.mineracao = mineracao;
         this.coleta = coleta;
         this.pesca = pesca;
         this.combate = combate;
-        this.inventario = inventario;
+        this.idInventario = idInventario;
+        this.idJogador = idJogador;
     }
 
+    //getters e setters
     public int getIdHabilidades() {
         return idHabilidades;
     }
@@ -67,11 +74,19 @@ public class Habilidades {
         this.combate = combate;
     }
 
-    public Inventario getInventario() {
-        return inventario;
+    public int getIdInventario() {
+        return idInventario;
     }
 
-    public void setInventario(Inventario inventario) {
-        this.inventario = inventario;
+    public void setIdInventario(int idInventario) {
+        this.idInventario = idInventario;
+    }
+
+    public int getIdJogador() {
+        return idJogador;
+    }
+
+    public void setIdJogador(int idJogador) {
+        this.idJogador = idJogador;
     }
 }
