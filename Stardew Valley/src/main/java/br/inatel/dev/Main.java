@@ -9,6 +9,10 @@ import java.sql.Connection;
 public class Main {
     public static void main(String[] args) {
         JogadorDAO jogador = new JogadorDAO();
+        AldeoesDAO aldeoes = new AldeoesDAO();
+        AmizadeDAO amizade = new AmizadeDAO();
+        AnimaisDAO animais = new AnimaisDAO();
+        HabilidadesDAO habilidades = new HabilidadesDAO();
         InventarioDAO inventario = new InventarioDAO();
         ItensDAO itens = new ItensDAO();
         LavourasDAO lavouras = new LavourasDAO();
@@ -17,10 +21,14 @@ public class Main {
         dao.connectToDB();
 
         //fazendo select de teste
+        aldeoes.selectAldeoes();
+        animais.selectAnimais();
+        habilidades.selectHabilidades();
         jogador.selectJogador();
         inventario.selectInventario();
         itens.selectItens();
         lavouras.selectLavouras();
+        amizade.selectAmizades();
 
     }
 }
