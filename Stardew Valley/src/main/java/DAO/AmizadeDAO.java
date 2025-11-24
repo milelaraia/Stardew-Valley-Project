@@ -12,7 +12,7 @@ public class AmizadeDAO extends ConnectionDAO {
 
     boolean sucesso = false;
 
-    // ------------------ INSERT ------------------
+    // INSERT
     public boolean insertAmizade(Amizade amizade) {
         connectToDB();
         String sql = "INSERT INTO Amizade (niveis, Jogador_idJogador, Aldeoes_idAldeoes, Animais_idAnimais) VALUES (?, ?, ?, ?)";
@@ -44,7 +44,7 @@ public class AmizadeDAO extends ConnectionDAO {
     }
 
 
-    // ------------------ UPDATE ------------------
+    // UPDATE
     public boolean updateAmizade(String niveis, int idJogador, int idAldeao, int idAnimal, int idAmizade) {
         connectToDB();
         String sql = "UPDATE Amizade SET niveis=?, Jogador_idJogador=?, Aldeoes_idAldeoes=?, Animais_idAnimais=? WHERE idAmizade=?";
@@ -78,7 +78,7 @@ public class AmizadeDAO extends ConnectionDAO {
     }
 
 
-    // ------------------ DELETE ------------------
+    // DELETE
     public boolean deleteAmizade(int id) {
         connectToDB();
         boolean sucesso = false;
@@ -108,7 +108,7 @@ public class AmizadeDAO extends ConnectionDAO {
     }
 
 
-    // ------------------ SELECT ------------------
+    // SELECT
     public ArrayList<Amizade> selectAmizades() {
         ArrayList<Amizade> lista = new ArrayList<>();
         connectToDB();

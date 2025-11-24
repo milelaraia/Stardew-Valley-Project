@@ -35,7 +35,7 @@ public class AnimaisDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ UPDATE ------------------
+    // UPDATE
     public boolean updateAnimal(String novoTipo, String novoNome, int idAnimal) {
         connectToDB();
         String sql = "UPDATE Animais SET tipo=?, nome=? WHERE idAnimais=?";

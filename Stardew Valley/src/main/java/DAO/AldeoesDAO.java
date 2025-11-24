@@ -9,7 +9,7 @@ public class AldeoesDAO extends ConnectionDAO {
 
     boolean sucesso = false;
 
-    // ------------------ INSERT ------------------
+    // INSERT
     public boolean insertAldeao(Aldeoes aldeao) {
         connectToDB();
         String sql = "INSERT INTO Aldeoes (nome, hobby, presente_que_ama) VALUES (?, ?, ?)";
@@ -36,7 +36,7 @@ public class AldeoesDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ UPDATE ------------------
+    // UPDATE
     public boolean updateAldeao(String nome, String hobby, String presente, int idAldeao) {
         connectToDB();
         String sql = "UPDATE Aldeoes SET nome=?, hobby=?, presente_que_ama=? WHERE idAldeoes=?";
@@ -63,7 +63,7 @@ public class AldeoesDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ DELETE ------------------
+    // DELETE
     public boolean deleteAldeao(int id) {
         connectToDB();
         boolean sucesso = false;
@@ -89,7 +89,7 @@ public class AldeoesDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ SELECT ------------------
+    // SELECT
     public ArrayList<Aldeoes> selectAldeoes() {
         ArrayList<Aldeoes> aldeoes = new ArrayList<>();
         connectToDB();

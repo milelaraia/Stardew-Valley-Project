@@ -1,6 +1,6 @@
 package Model;
 
-public class Jogador extends Personagem implements Interagivel {
+public class Jogador extends Personagem {
 
     private int idJogador;
     private String nome_fazenda;
@@ -9,7 +9,7 @@ public class Jogador extends Personagem implements Interagivel {
     private String genero;
     private int energia;
     private int saude;
-    private int inventario;  // ID do inventário (FK)
+    private int idInventario;  // ID do inventário
 
     public Jogador(int idJogador, String nome, String nome_fazenda, String animal_favorito,
                    String coisa_favorita, String genero, int energia, int saude, int inventario) {
@@ -22,7 +22,7 @@ public class Jogador extends Personagem implements Interagivel {
         this.genero = genero;
         this.energia = energia;
         this.saude = saude;
-        this.inventario = inventario;
+        this.idInventario = inventario;
     }
 
     @Override
@@ -35,9 +35,8 @@ public class Jogador extends Personagem implements Interagivel {
         System.out.println(nome + " diz: 'É um ótimo dia para plantar umas sementes!'");
     }
 
-    // ----------------------------
-    // GETTERS NECESSÁRIOS PARA O DAO
-    // ----------------------------
+
+    // Getters necessários para o DAO
 
     public int getIdJogador() {
         return idJogador;
@@ -68,7 +67,7 @@ public class Jogador extends Personagem implements Interagivel {
     }
 
     public int getInventario() {
-        return inventario;
+        return idInventario;
     }
 
     // Se quiser, pode adicionar SETTERS também:
@@ -97,6 +96,6 @@ public class Jogador extends Personagem implements Interagivel {
     }
 
     public void setInventario(int inventario) {
-        this.inventario = inventario;
+        this.idInventario = inventario;
     }
 }

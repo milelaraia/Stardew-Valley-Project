@@ -1,6 +1,6 @@
 package Model;
 
-public class Aldeoes extends Personagem implements Interagivel {
+public class Aldeoes extends Personagem {
 
     private int idAldeoes;
     private String hobby;
@@ -13,6 +13,7 @@ public class Aldeoes extends Personagem implements Interagivel {
         this.presente_que_ama = presente_que_ama;
     }
 
+    // Métodos das classes Personagem e Interagivel
     @Override
     public void interagir() {
         System.out.println(nome + " acena de forma amigável.");
@@ -23,10 +24,8 @@ public class Aldeoes extends Personagem implements Interagivel {
         System.out.println(nome + " diz: 'Você trouxe algo que eu gosto?'");
     }
 
-    // ----------------------------
-    // GETTERS NECESSÁRIOS PARA O DAO
-    // ----------------------------
 
+    // Getters necessários para o DAO
     public int getIdAldeoes() {
         return idAldeoes;
     }
@@ -39,7 +38,7 @@ public class Aldeoes extends Personagem implements Interagivel {
         return presente_que_ama;
     }
 
-    // SETTERS OPCIONAIS
+    // Setters
     public void setHobby(String hobby) {
         this.hobby = hobby;
     }

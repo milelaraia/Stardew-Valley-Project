@@ -7,6 +7,7 @@ public class Amizade {
     private Aldeoes aldeao;
     private Animais animal;
 
+    // Constructor
     public Amizade(int idAmizade, String niveis, Jogador jogador, Aldeoes aldeao, Animais animal) {
         this.idAmizade = idAmizade;
         this.niveis = niveis;
@@ -15,6 +16,7 @@ public class Amizade {
         this.animal = animal;
     }
 
+    // Getters e Setters
     public int getIdAmizade() {
         return idAmizade;
     }

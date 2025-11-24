@@ -1,12 +1,15 @@
 package Model;
 
 public class Itens {
+
+    // Atributos
     private int idItens;
     private String ferramentas;
     private String armas;
     private String aneis;
-    private int idInventario;
+    private int idInventario; // FK (depende de um inventário que já existe)
 
+    // Contructor
     public Itens(int idItens, String ferramentas, String armas, String aneis, int inventario) {
         this.idItens = idItens;
         this.ferramentas = ferramentas;
@@ -15,6 +18,7 @@ public class Itens {
         this.idInventario = inventario;
     }
 
+    // Getters e Setters
     public int getIdItens() {
         return idItens;
     }

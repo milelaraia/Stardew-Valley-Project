@@ -18,7 +18,7 @@ public class Main {
         relogio.setDaemon(true); // Permite fechar sem travar
         relogio.start();
 
-        System.out.println("\n🌾✨ Bem-vindo(a) a Pelican Town — Stardew Java Edition ✨🌾");
+        System.out.println("\n Bem-vindo(a) a Pelican Town — Stardew Java Edition");
 
         int opcao = -1;
 
@@ -28,56 +28,73 @@ public class Main {
             System.out.println("1 - Listar Jogadores");
             System.out.println("2 - Listar Aldeões");
             System.out.println("3 - Listar Animais");
-            System.out.println("4 - Criar Nova Amizade");
-            System.out.println("5 - Testar Interações (Herança & Polimorfismo)");
+            System.out.println("4 - Listar Itens");
+            System.out.println("5 - Listar Inventario");
+            System.out.println("6 - Listar Habilidades");
+            System.out.println("7 - Criar Nova Amizade");
+            System.out.println("8 - Testar Interações");
             System.out.println("0 - Sair");
             System.out.print("> ");
 
-            String entrada = sc.nextLine().trim();
+            String entrada = sc.nextLine().trim(); // garante que a entrada nao tenha um espaço antes e "quebre" o codigo
 
+            // trata os erros de entrada do menu
             if (entrada.isEmpty()) {
-                System.out.println("⚠ Você não digitou nada! Tente novamente.");
+                System.out.println("Você não digitou nada! Tente novamente.");
                 continue;
             }
 
             try {
-                opcao = Integer.parseInt(entrada);
+                opcao = Integer.parseInt(entrada); // metodo estatico do java que trata se há um numero válido
             } catch (NumberFormatException e) {
-                System.out.println("⚠ Opção inválida! Digite apenas números.");
+                System.out.println("Opção inválida! Digite apenas números.");
                 continue;
             }
 
             switch (opcao) {
 
                 case 1 -> {
-                    System.out.println("\n📜 Listando jogadores...");
+                    System.out.println("\nListando jogadores...");
                     new JogadorDAO().selectJogador();
                 }
 
                 case 2 -> {
-                    System.out.println("\n🏘 Listando aldeões...");
+                    System.out.println("\nListando aldeões...");
                     new AldeoesDAO().selectAldeoes();
                 }
 
                 case 3 -> {
-                    System.out.println("\n🐄 Listando animais...");
+                    System.out.println("\nListando animais...");
                     new AnimaisDAO().selectAnimais();
                 }
 
-                case 4 -> criarNovaAmizade(sc);
+                case 4 -> {
+                    System.out.println("\nListando itens...");
+                    new ItensDAO().selectItens();
+                }
 
-                case 5 -> testarPolimorfismo();
+                case 5 -> {
+                    System.out.println("\nListando inventário...");
+                    new InventarioDAO().selectInventario();
+                }
 
-                case 0 -> System.out.println("\n👋 Encerrando sua jornada em Pelican Town...");
+                case 6 -> {
+                    System.out.println("\nListando habilidades...");
+                    new HabilidadesDAO().selectHabilidades();
+                }
 
-                default -> System.out.println("⚠ Opção inexistente!");
+                case 7 -> criarNovaAmizade(sc);
+
+                case 8 -> interacoes();
+
+                case 0 -> System.out.println("\nEncerrando sua jornada em Pelican Town...");
+
+                default -> System.out.println("Opção inexistente!");
             }
         }
     }
 
-    // ============================================================
-    // FUNÇÃO 1: CRIAR AMIZADE
-    // ============================================================
+    // funçao 1 - criar amizade
     private static void criarNovaAmizade(Scanner sc) {
 
         JogadorDAO jdao = new JogadorDAO();
@@ -88,7 +105,7 @@ public class Main {
         ArrayList<Aldeoes> aldeoes = adao.selectAldeoes();
         ArrayList<Animais> animais = anmDAO.selectAnimais();
 
-        System.out.println("\n💛 Criando nova amizade...");
+        System.out.println("\nCriando nova amizade...");
 
         int idJogador = lerID(sc, "ID do jogador: ");
         int idAldeao = lerID(sc, "ID do aldeão: ");
@@ -97,13 +114,13 @@ public class Main {
         System.out.print("Nível da amizade (Baixo/Médio/Alto): ");
         String nivel = sc.nextLine().trim();
 
-        // Validar IDs
+        // Validar os ids
         Jogador jog = jogadores.stream().filter(j -> j.getIdJogador() == idJogador).findFirst().orElse(null);
         Aldeoes ald = aldeoes.stream().filter(a -> a.getIdAldeoes() == idAldeao).findFirst().orElse(null);
         Animais ani = animais.stream().filter(a -> a.getIdAnimais() == idAnimal).findFirst().orElse(null);
 
         if (jog == null || ald == null || ani == null) {
-            System.out.println("❌ Um ou mais IDs informados não existem.");
+            System.out.println("Um ou mais IDs informados não existem.");
             return;
         }
 
@@ -111,18 +128,16 @@ public class Main {
 
         AmizadeDAO amDAO = new AmizadeDAO();
         if (amDAO.insertAmizade(amizade)) {
-            System.out.println("💛 Amizade criada com sucesso!");
+            System.out.println("Amizade criada com sucesso!");
         } else {
-            System.out.println("❌ Não foi possível criar amizade.");
+            System.out.println("Não foi possível criar amizade.");
         }
     }
 
-    // ============================================================
-    // FUNÇÃO 2: TESTE DE HERANÇA + POLIMORFISMO
-    // ============================================================
-    private static void testarPolimorfismo() {
+    //  funçao 2 - interaçoes
+    private static void interacoes() {
 
-        System.out.println("\n🔮 Testando interações polimórficas...");
+        System.out.println("\nTestando interações na vila...");
 
         Personagem p1 = new Jogador(1, "Mile", "Mar Azul", "Gato", "Peixe", "Fem", 200, 150, 1);
         Personagem p2 = new Aldeoes(1, "Abigail", "Explorar minas", "Ametista");
@@ -130,28 +145,26 @@ public class Main {
         p1.interagir();  // comportamento do jogador
         p2.interagir();  // comportamento do aldeão
 
-        System.out.println("\n💬 Testando interface Interagivel:");
+        System.out.println("\nDiálogos:");
         ((Interagivel) p1).conversar();
         ((Interagivel) p2).conversar();
     }
 
-    // ============================================================
-    // FUNÇÃO EXTRA: LEITURA SEGURA DE ID
-    // ============================================================
+    // funçao extra - leitura segura de id
     private static int lerID(Scanner sc, String msg) {
         while (true) {
             System.out.print(msg);
             String entrada = sc.nextLine().trim();
 
             if (entrada.isEmpty()) {
-                System.out.println("⚠ Entrada vazia! Tente novamente.");
+                System.out.println("Entrada vazia! Tente novamente.");
                 continue;
             }
 
             try {
                 return Integer.parseInt(entrada);
             } catch (NumberFormatException e) {
-                System.out.println("⚠ Digite apenas números!");
+                System.out.println("Digite apenas números!");
             }
         }
     }

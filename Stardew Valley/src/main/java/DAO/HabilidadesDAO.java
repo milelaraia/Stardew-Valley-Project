@@ -9,7 +9,7 @@ public class HabilidadesDAO extends ConnectionDAO {
 
     boolean sucesso = false;
 
-    // ------------------ INSERT ------------------
+    // INSERT
     public boolean insertHabilidade(Habilidades h) {
         connectToDB();
         String sql = "INSERT INTO Habilidades (cultivo, mineracao, coleta, pesca, combate, Inventario_idInventario, Jogador_idJogador) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -77,7 +77,7 @@ public class HabilidadesDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ DELETE ------------------
+    // DELETE
     public boolean deleteHabilidade(int id) {
         connectToDB();
         boolean sucesso = false;
@@ -106,7 +106,7 @@ public class HabilidadesDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ------------------ SELECT ------------------
+    // SELECT
     public ArrayList<Habilidades> selectHabilidades() {
         ArrayList<Habilidades> habilidades = new ArrayList<>();
         connectToDB();

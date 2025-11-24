@@ -2,18 +2,18 @@ package Model;
 
 public class Inventario {
 
-    //atributos
+    // Atributos
     private int idInventario;
     private int capacidade;
 
-    //constructor
+    // Constructor
     public Inventario(int idInventario, int capacidade) {
         this.idInventario = idInventario;
         this.capacidade = capacidade;
     }
 
 
-    //getters e setters
+    // Getters e setters
     public int getIdInventario() {
         return idInventario;
     }
