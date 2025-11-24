@@ -1,7 +1,6 @@
 package br.inatel.dev;
 
-import DAO.ConnectionDAO;
-import DAO.JogadorDAO;
+import DAO.*;
 
 import java.sql.Connection;
 
@@ -10,12 +9,18 @@ import java.sql.Connection;
 public class Main {
     public static void main(String[] args) {
         JogadorDAO jogador = new JogadorDAO();
+        InventarioDAO inventario = new InventarioDAO();
+        ItensDAO itens = new ItensDAO();
+        LavourasDAO lavouras = new LavourasDAO();
         // testando a conexão com o banco de dados
         ConnectionDAO dao = new ConnectionDAO() {};
         dao.connectToDB();
 
         //fazendo select de teste
         jogador.selectJogador();
+        inventario.selectInventario();
+        itens.selectItens();
+        lavouras.selectLavouras();
 
     }
 }

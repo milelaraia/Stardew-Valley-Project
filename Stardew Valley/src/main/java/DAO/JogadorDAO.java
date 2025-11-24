@@ -136,8 +136,8 @@ public class JogadorDAO extends ConnectionDAO{
 
                 Jogador jogadorAux = new Jogador(rs.getInt("idJogador"), rs.getString("nome"), rs.getString("nome_fazenda"), rs.getString("animal_favorito"), rs.getString("coisa_favorita"), rs.getString("genero"), rs.getInt("energia"), rs.getInt("saude"), rs.getInt("Inventario_idInventario"));
 
-                System.out.println("Nome: " + jogadorAux.getNome());
                 System.out.println("Id: " + jogadorAux.getIdJogador());
+                System.out.println("Nome: " + jogadorAux.getNome());
                 System.out.println("Nome da fazenda: " + jogadorAux.getNome_fazenda());
                 System.out.println("Animal favorito: " + jogadorAux.getAnimal_favorito());
                 System.out.println("Coisa favorita: " + jogadorAux.getCoisa_favorita());

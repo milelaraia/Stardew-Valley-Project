@@ -5,14 +5,14 @@ public class Itens {
     private String ferramentas;
     private String armas;
     private String aneis;
-    private Inventario inventario;
+    private int idInventario;
 
-    public Itens(int idItens, String ferramentas, String armas, String aneis, Inventario inventario) {
+    public Itens(int idItens, String ferramentas, String armas, String aneis, int inventario) {
         this.idItens = idItens;
         this.ferramentas = ferramentas;
         this.armas = armas;
         this.aneis = aneis;
-        this.inventario = inventario;
+        this.idInventario = inventario;
     }
 
     public int getIdItens() {
@@ -47,11 +47,11 @@ public class Itens {
         this.aneis = aneis;
     }
 
-    public Inventario getInventario() {
-        return inventario;
+    public int getInventario() {
+        return idInventario;
     }
 
-    public void setInventario(Inventario inventario) {
-        this.inventario = inventario;
+    public void setInventario(int inventario) {
+        this.idInventario = inventario;
     }
 }
