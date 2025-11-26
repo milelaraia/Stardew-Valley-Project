@@ -1,6 +1,6 @@
 package Model;
 
-public abstract class Personagem implements Interagivel {
+public abstract class Personagem {
     protected String nome;
 
     public Personagem(String nome){

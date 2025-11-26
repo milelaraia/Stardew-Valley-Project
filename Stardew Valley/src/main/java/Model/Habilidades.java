@@ -30,63 +30,31 @@ public class Habilidades {
         return idHabilidades;
     }
 
-    public void setIdHabilidades(int idHabilidades) {
-        this.idHabilidades = idHabilidades;
-    }
-
     public int getCultivo() {
         return cultivo;
-    }
-
-    public void setCultivo(int cultivo) {
-        this.cultivo = cultivo;
     }
 
     public int getMineracao() {
         return mineracao;
     }
 
-    public void setMineracao(int mineracao) {
-        this.mineracao = mineracao;
-    }
-
     public int getColeta() {
         return coleta;
-    }
-
-    public void setColeta(int coleta) {
-        this.coleta = coleta;
     }
 
     public int getPesca() {
         return pesca;
     }
 
-    public void setPesca(int pesca) {
-        this.pesca = pesca;
-    }
-
     public int getCombate() {
         return combate;
-    }
-
-    public void setCombate(int combate) {
-        this.combate = combate;
     }
 
     public int getIdInventario() {
         return idInventario;
     }
 
-    public void setIdInventario(int idInventario) {
-        this.idInventario = idInventario;
-    }
-
     public int getIdJogador() {
         return idJogador;
-    }
-
-    public void setIdJogador(int idJogador) {
-        this.idJogador = idJogador;
     }
 }

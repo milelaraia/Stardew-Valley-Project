@@ -1,6 +1,6 @@
 package Model;
 
-public class Jogador extends Personagem {
+public class Jogador extends Personagem implements Interagivel {
 
     private int idJogador;
     private String nome_fazenda;
@@ -70,32 +70,4 @@ public class Jogador extends Personagem {
         return idInventario;
     }
 
-    // Se quiser, pode adicionar SETTERS também:
-    public void setNome_fazenda(String nome_fazenda) {
-        this.nome_fazenda = nome_fazenda;
-    }
-
-    public void setAnimal_favorito(String animal_favorito) {
-        this.animal_favorito = animal_favorito;
-    }
-
-    public void setCoisa_favorita(String coisa_favorita) {
-        this.coisa_favorita = coisa_favorita;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public void setEnergia(int energia) {
-        this.energia = energia;
-    }
-
-    public void setSaude(int saude) {
-        this.saude = saude;
-    }
-
-    public void setInventario(int inventario) {
-        this.idInventario = inventario;
-    }
 }

@@ -4,136 +4,180 @@ import Model.Inventario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Statement;
 
 public class InventarioDAO extends ConnectionDAO {
 
     boolean sucesso = false;
 
     // INSERT
-    public boolean insertInventario(Inventario inventario) {
+    public boolean insertInventario(Inventario inv) {
         connectToDB();
-        String sql = "INSERT INTO Inventario (capacidade) VALUES(?)";
+
+        String sql = "INSERT INTO Inventario (capacidade) VALUES (?)";
 
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, inventario.getCapacidade());
+            pst.setInt(1, inv.getCapacidade());
+
             pst.execute();
             sucesso = true;
-        } catch (SQLException exc) {
-            System.out.println("Erro: " + exc.getMessage());
-            sucesso = false;
-        } finally {
-            try {
-                pst.close();
-                con.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
-            }
-        }
 
+        } catch (SQLException e) {
+            System.out.println("Erro (insertInventario): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try { pst.close(); con.close(); }
+            catch (SQLException e) { System.out.println("Erro ao fechar conexão: " + e.getMessage()); }
+        }
         return sucesso;
     }
 
-    // UPDATE
-    public boolean updateInventario(int novaCapacidade, int idInventario) {
+    public int criarInventarioAutomatico() {
         connectToDB();
-        String sql = "UPDATE Inventario SET capacidade=? WHERE idInventario=?";
+        int idGerado = -1;
+
+        String sql = "INSERT INTO Inventario (capacidade) VALUES (20)"; // capacidade padrão
 
         try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, novaCapacidade);
-            pst.setInt(2, idInventario);
+            pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.execute();
-            sucesso = true;
-        } catch (SQLException ex) {
-            System.out.println("Erro = " + ex.getMessage());
-            sucesso = false;
-        } finally {
-            try {
-                pst.close();
-                con.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
+
+            rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                idGerado = rs.getInt(1); // pega o ID do inventário recém criado
             }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao criar inventário automático: " + e.getMessage());
+        } finally {
+            try { pst.close(); con.close(); } catch (Exception ignored) {}
         }
 
-        return sucesso;
+        return idGerado;
     }
 
-    // DELETE
-    public boolean deleteInventario(int idInventario) {
-        connectToDB();
-        boolean sucesso = false;
-
-        try {
-            con.setAutoCommit(false);
-
-            String sql = "DELETE FROM Inventario WHERE idInventario = ?";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, idInventario);
-            pst.executeUpdate();
-            pst.close();
-
-            con.commit();
-            sucesso = true;
-
-        } catch (SQLException ex) {
-            try {
-                con.rollback();
-                System.out.println("Erro = " + ex.getMessage());
-            } catch (SQLException rollbackEx) {
-                System.out.println("Erro no rollback: " + rollbackEx.getMessage());
-            }
-        } finally {
-            try {
-                con.setAutoCommit(true);
-                if (pst != null) pst.close();
-                con.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
-            }
-        }
-
-        return sucesso;
-    }
-
-    // SELECT
+    // SELECT SIMPLES
     public ArrayList<Inventario> selectInventario() {
         connectToDB();
-        ArrayList<Inventario> inventarios = new ArrayList<>();
+        ArrayList<Inventario> lista = new ArrayList<>();
+
         String sql = "SELECT * FROM Inventario";
 
         try {
             st = con.createStatement();
             rs = st.executeQuery(sql);
 
-            System.out.println("\n----->Capacidades de inventário: ");
-
             while (rs.next()) {
-                Inventario inventarioAux = new Inventario(
+                Inventario inv = new Inventario(
                         rs.getInt("idInventario"),
                         rs.getInt("capacidade")
                 );
+                lista.add(inv);
 
-                System.out.println("IdIventario: " + inventarioAux.getIdInventario());
-                System.out.println("Capacidade: " + inventarioAux.getCapacidade() + "\n");
-
-                inventarios.add(inventarioAux);
+                // <<< IMPRIME AQUI >>>
+                System.out.println("ID: " + inv.getIdInventario());
+                System.out.println("Capacidade: " + inv.getCapacidade());
+                System.out.println("------------------------------");
             }
 
             sucesso = true;
+
         } catch (SQLException e) {
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro (selectInventario): " + e.getMessage());
             sucesso = false;
+
         } finally {
-            try {
-                st.close();
-                con.close();
-            } catch (SQLException e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
+            try { st.close(); con.close(); }
+            catch (SQLException e) { System.out.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
 
-        return inventarios;
+        return lista;
+    }
+
+    // SELECT COM JOIN (Inventário + Jogador (quem usa aquele inventário))
+    public void selectInventarioComJogadores() {
+        connectToDB();
+
+        String sql =
+                "SELECT inv.idInventario, inv.capacidade, j.nome AS jogador " +
+                        "FROM Inventario inv " +
+                        "LEFT JOIN Jogador j ON j.Inventario_idInventario = inv.idInventario";
+
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+
+            System.out.println("\n--- Inventários e seus Jogadores ---");
+
+            while (rs.next()) {
+                System.out.println("Inventário: " + rs.getInt("idInventario"));
+                System.out.println("Capacidade: " + rs.getInt("capacidade"));
+                System.out.println("Jogador usando: " + rs.getString("jogador"));
+                System.out.println("----------------------------------");
+            }
+
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (JOIN Inventario+Jogador): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try { st.close(); con.close(); }
+            catch (SQLException e) { System.out.println("Erro ao fechar conexão: " + e.getMessage()); }
+        }
+    }
+
+    // UPDATE
+    public boolean updateInventario(Inventario inv) {
+        connectToDB();
+
+        String sql = "UPDATE Inventario SET capacidade=? WHERE idInventario=?";
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, inv.getCapacidade());
+            pst.setInt(2, inv.getIdInventario());
+
+            pst.executeUpdate();
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (updateInventario): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try { pst.close(); con.close(); }
+            catch (SQLException e) { System.out.println("Erro ao fechar conexão: " + e.getMessage()); }
+        }
+
+        return sucesso;
+    }
+
+    // DELETE
+    public boolean deleteInventario(int id) {
+        connectToDB();
+
+        String sql = "DELETE FROM Inventario WHERE idInventario=?";
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, id);
+
+            pst.executeUpdate();
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (deleteInventario): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try { pst.close(); con.close(); }
+            catch (SQLException e) { System.out.println("Erro ao fechar conexão: " + e.getMessage()); }
+        }
+
+        return sucesso;
     }
 }

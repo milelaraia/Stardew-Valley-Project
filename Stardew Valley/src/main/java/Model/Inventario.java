@@ -18,15 +18,8 @@ public class Inventario {
         return idInventario;
     }
 
-    public void setIdInventario(int idInventario) {
-        this.idInventario = idInventario;
-    }
-
     public int getCapacidade() {
         return capacidade;
     }
 
-    public void setCapacidade(int capacidade) {
-        this.capacidade = capacidade;
-    }
 }

@@ -1,167 +1,238 @@
 package DAO;
 
 import Model.Jogador;
-
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
-public class JogadorDAO extends ConnectionDAO{
+public class JogadorDAO extends ConnectionDAO {
 
-    //DAO - Data Access Object
-    boolean sucesso = false; //Para saber se funcionou
+    boolean sucesso = false;
 
+    // ===============================
+    // INSERT — com inventário automático
+    // ===============================
+    public boolean insertJogador(Jogador j) {
+        connectToDB();
 
-    //INSERT
-    public boolean insertJogador(Jogador jogador) {
-
-        String sql = "INSERT INTO Jogador (nome, nome_fazenda, animal_favorito, coisa_favorita, genero, energia, saude) values(?,?,?,?,?,?,?)";
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, jogador.getNome());
-            pst.setString(2,jogador.getNome_fazenda());
-            pst.setString(3, jogador.getAnimal_favorito());
-            pst.setString(4, jogador.getCoisa_favorita());
-            pst.setString(5, jogador.getGenero());
-            pst.setInt(6, jogador.getEnergia());
-            pst.setInt(7, jogador.getSaude());
+            // 1 — Criar inventário novo com capacidade padrão
+            String sqlInv = "INSERT INTO Inventario (capacidade) VALUES (20)";
+            pst = con.prepareStatement(sqlInv, Statement.RETURN_GENERATED_KEYS);
+            pst.executeUpdate();
+
+            rs = pst.getGeneratedKeys();
+            int idInv = 0;
+
+            if (rs.next()) {
+                idInv = rs.getInt(1);
+            }
+
+            // 2 — Criar o jogador usando o inventário recém-criado
+            String sqlJog = "INSERT INTO Jogador " +
+                    "(nome, nome_fazenda, animal_favorito, coisa_favorita, genero, energia, saude, Inventario_idInventario) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            pst = con.prepareStatement(sqlJog);
+            pst.setString(1, j.getNome());
+            pst.setString(2, j.getNome_fazenda());
+            pst.setString(3, j.getAnimal_favorito());
+            pst.setString(4, j.getCoisa_favorita());
+            pst.setString(5, j.getGenero());
+            pst.setInt(6, j.getEnergia());
+            pst.setInt(7, j.getSaude());
+            pst.setInt(8, idInv);
+
             pst.execute();
             sucesso = true;
-        } catch (SQLException exc) {
-            System.out.println("Erro: " + exc.getMessage());
+
+        } catch (SQLException e) {
+            System.out.println("Erro (insertJogador): " + e.getMessage());
             sucesso = false;
+
         } finally {
             try {
-                con.close();
-                pst.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
-            }
-        }
-        return sucesso;
-    }
-
-    //UPDATE
-    public boolean updateBatalha(String novoNome, String novaFazenda, String novoAnimal_favorito, String novaCoisa_favorita, String novoGenero, int novoEnergia, int novoSaude, int idJogador) {
-
-        String sql = "UPDATE Jogador SET nome=?, nome_fazenda=?, animal_favorito=?, coisa_favorita=?, genero=?, energia=?, saude=? where idJogador=?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, novoNome);
-            pst.setString(2, novaFazenda);
-            pst.setString(3, novoAnimal_favorito);
-            pst.setString(4, novaCoisa_favorita);
-            pst.setString(5, novoGenero);
-            pst.setInt(6, novoEnergia);
-            pst.setInt(7, novoSaude);
-            pst.setInt(8, idJogador);
-            pst.execute();
-            sucesso = true;
-        } catch (SQLException ex) {
-            System.out.println("Erro = " + ex.getMessage());
-            sucesso = false;
-        } finally {
-            try {
-                con.close();
-                pst.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
-            }
-        }
-        return sucesso;
-    }
-
-    //DELETE
-    public boolean deleteBatalha(int id) {
-        boolean sucesso = false;
-
-        try {
-            // Desabilitar auto-commit para iniciar uma transação
-            con.setAutoCommit(false);
-
-            // Primeira instrução DELETE
-            String sqlJogador = "DELETE FROM Jogador WHERE idJogador = ?";
-            pst = con.prepareStatement(sqlJogador);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            pst.close();
-
-            // Segunda instrução DELETE caso precise apagar algo junto do jogador
-            /*
-            String sqlInventario = "DELETE FROM Inventario WHERE idInventario = ?";
-            pst = con.prepareStatement(sqlInventario);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            pst.close();
-            */
-
-            // Commit da transação se ambas as operações forem bem-sucedidas
-            con.commit();
-            sucesso = true;
-        } catch (SQLException ex) {
-            // Rollback em caso de erro
-            try {
-                con.rollback();
-                System.out.println("Erro = " + ex.getMessage());
-            } catch (SQLException rollbackEx) {
-                System.out.println("Erro no rollback: " + rollbackEx.getMessage());
-            }
-            sucesso = false;
-        } finally {
-            // Restaurar o auto-commit e fechar os recursos
-            try {
-                con.setAutoCommit(true);
+                if (rs != null) rs.close();
                 if (pst != null) pst.close();
                 if (con != null) con.close();
-            } catch (SQLException exc) {
-                System.out.println("Erro: " + exc.getMessage());
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
             }
         }
         return sucesso;
     }
 
-
-    //SELECT
+    // ===============================
+    // SELECT simples
+    // ===============================
     public ArrayList<Jogador> selectJogador() {
-        ArrayList<Jogador> jogador = new ArrayList<>();
         connectToDB();
+        ArrayList<Jogador> lista = new ArrayList<>();
+
         String sql = "SELECT * FROM Jogador";
 
         try {
             st = con.createStatement();
             rs = st.executeQuery(sql);
 
-            System.out.println("\n----->Jogadores Listados: ");
+            System.out.println("\n------ LISTA DE JOGADORES ------");
 
             while (rs.next()) {
+                Jogador j = new Jogador(
+                        rs.getInt("idJogador"),
+                        rs.getString("nome"),
+                        rs.getString("nome_fazenda"),
+                        rs.getString("animal_favorito"),
+                        rs.getString("coisa_favorita"),
+                        rs.getString("genero"),
+                        rs.getInt("energia"),
+                        rs.getInt("saude"),
+                        rs.getInt("Inventario_idInventario")
+                );
 
-                Jogador jogadorAux = new Jogador(rs.getInt("idJogador"), rs.getString("nome"), rs.getString("nome_fazenda"), rs.getString("animal_favorito"), rs.getString("coisa_favorita"), rs.getString("genero"), rs.getInt("energia"), rs.getInt("saude"), rs.getInt("Inventario_idInventario"));
+                lista.add(j);
 
-                System.out.println("Id: " + jogadorAux.getIdJogador());
-                System.out.println("Nome: " + jogadorAux.getNome());
-                System.out.println("Nome da fazenda: " + jogadorAux.getNome_fazenda());
-                System.out.println("Animal favorito: " + jogadorAux.getAnimal_favorito());
-                System.out.println("Coisa favorita: " + jogadorAux.getCoisa_favorita());
-                System.out.println("Genero: " + jogadorAux.getGenero());
-                System.out.println("Energia: " + jogadorAux.getEnergia());
-                System.out.println("Saude: " + jogadorAux.getSaude());
-                System.out.println("Id de inventário: " + jogadorAux.getInventario() + "\n");
-
-                jogador.add(jogadorAux);
+                // IMPRIME
+                System.out.println("ID: " + j.getIdJogador());
+                System.out.println("Nome: " + j.getNome());
+                System.out.println("Fazenda: " + j.getNome_fazenda());
+                System.out.println("Animal favorito: " + j.getAnimal_favorito());
+                System.out.println("Coisa favorita: " + j.getCoisa_favorita());
+                System.out.println("Gênero: " + j.getGenero());
+                System.out.println("Energia: " + j.getEnergia());
+                System.out.println("Saúde: " + j.getSaude());
+                System.out.println("Inventário: " + j.getInventario());
+                System.out.println("----------------------------------------");
             }
+
+            if (lista.isEmpty()) {
+                System.out.println("Nenhum jogador encontrado!");
+            }
+
             sucesso = true;
+
         } catch (SQLException e) {
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro (selectJogador): " + e.getMessage());
             sucesso = false;
+
         } finally {
             try {
-                con.close();
                 st.close();
+                con.close();
             } catch (SQLException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
             }
         }
-        return jogador;
+
+        return lista;
     }
 
-}
+    // ===============================
+    // SELECT Jogadores + Inventário
+    // ===============================
+    public void selectJogadoresComInventario() {
+        connectToDB();
 
+        String sql =
+                "SELECT j.nome, j.nome_fazenda, i.capacidade " +
+                        "FROM Jogador j " +
+                        "JOIN Inventario i ON i.idInventario = j.Inventario_idInventario";
+
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+
+            System.out.println("\n--- Jogadores com seus Inventários ---");
+
+            while (rs.next()) {
+                System.out.println("Jogador: " + rs.getString("nome"));
+                System.out.println("Fazenda: " + rs.getString("nome_fazenda"));
+                System.out.println("Capacidade do Inventário: " + rs.getInt("capacidade"));
+                System.out.println("-------------------------");
+            }
+
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (JOIN): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try {
+                st.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+    }
+
+    // ===============================
+    // UPDATE
+    // ===============================
+    public boolean updateJogador(Jogador j) {
+        connectToDB();
+
+        String sql = "UPDATE Jogador SET nome=?, nome_fazenda=?, animal_favorito=?, coisa_favorita=?, genero=?, energia=?, saude=? " +
+                "WHERE idJogador=?";
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, j.getNome());
+            pst.setString(2, j.getNome_fazenda());
+            pst.setString(3, j.getAnimal_favorito());
+            pst.setString(4, j.getCoisa_favorita());
+            pst.setString(5, j.getGenero());
+            pst.setInt(6, j.getEnergia());
+            pst.setInt(7, j.getSaude());
+            pst.setInt(8, j.getIdJogador());
+
+            pst.executeUpdate();
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (updateJogador): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try {
+                pst.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+
+        return sucesso;
+    }
+
+    // ===============================
+    // DELETE
+    // ===============================
+    public boolean deleteJogador(int id) {
+        connectToDB();
+
+        String sql = "DELETE FROM Jogador WHERE idJogador=?";
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, id);
+
+            pst.executeUpdate();
+            sucesso = true;
+
+        } catch (SQLException e) {
+            System.out.println("Erro (deleteJogador): " + e.getMessage());
+            sucesso = false;
+
+        } finally {
+            try {
+                pst.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+
+        return sucesso;
+    }
+}

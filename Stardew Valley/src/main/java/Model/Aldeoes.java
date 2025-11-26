@@ -1,6 +1,6 @@
 package Model;
 
-public class Aldeoes extends Personagem {
+public class Aldeoes extends Personagem implements Interagivel {
 
     private int idAldeoes;
     private String hobby;
@@ -38,12 +38,4 @@ public class Aldeoes extends Personagem {
         return presente_que_ama;
     }
 
-    // Setters
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
-    }
-
-    public void setPresente_que_ama(String presente_que_ama) {
-        this.presente_que_ama = presente_que_ama;
-    }
 }
