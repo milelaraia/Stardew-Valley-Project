@@ -8,9 +8,7 @@ public class JogadorDAO extends ConnectionDAO {
 
     boolean sucesso = false;
 
-    // ===============================
     // INSERT — com inventário automático
-    // ===============================
     public boolean insertJogador(Jogador j) {
         connectToDB();
 
@@ -61,9 +59,7 @@ public class JogadorDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ===============================
     // SELECT simples
-    // ===============================
     public ArrayList<Jogador> selectJogador() {
         connectToDB();
         ArrayList<Jogador> lista = new ArrayList<>();
@@ -126,9 +122,7 @@ public class JogadorDAO extends ConnectionDAO {
         return lista;
     }
 
-    // ===============================
     // SELECT Jogadores + Inventário
-    // ===============================
     public void selectJogadoresComInventario() {
         connectToDB();
 
@@ -166,9 +160,7 @@ public class JogadorDAO extends ConnectionDAO {
         }
     }
 
-    // ===============================
     // UPDATE
-    // ===============================
     public boolean updateJogador(Jogador j) {
         connectToDB();
 
@@ -205,9 +197,7 @@ public class JogadorDAO extends ConnectionDAO {
         return sucesso;
     }
 
-    // ===============================
     // DELETE
-    // ===============================
     public boolean deleteJogador(int id) {
         connectToDB();
 

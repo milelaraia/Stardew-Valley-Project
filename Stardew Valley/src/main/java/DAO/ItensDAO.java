@@ -60,7 +60,7 @@ public class ItensDAO extends ConnectionDAO {
                 );
                 lista.add(i);
 
-                // <<< IMPRIME AQUI >>>
+
                 System.out.println("ID: " + i.getIdItens());
                 System.out.println("Ferramentas: " + i.getFerramentas());
                 System.out.println("Armas: " + i.getArmas());

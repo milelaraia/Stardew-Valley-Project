@@ -17,7 +17,7 @@ public class Main {
         relogio.setDaemon(true);
         relogio.start();
 
-        System.out.println("\n🌾 Bem-vindo(a) à Pelican Town — Stardew Java Edition!");
+        System.out.println("\n Bem-vindo(a) à Pelican Town — Stardew Java Edition!");
 
         int opcao = -1;
 
@@ -48,14 +48,14 @@ public class Main {
                 case 7 -> menuAmizades(sc);
                 case 8 -> interacoes();
                 case 0 -> System.out.println("\nSaindo da vila... Até a próxima!");
-                default -> System.out.println("❌ Opção inexistente!");
+                default -> System.out.println("Opção inexistente!");
             }
         }
     }
 
-    // ================ SUBMENUS ===================
+    // SUBMENUS
 
-    // ------------------ JOGADORES ------------------
+    // JOGADORES
     private static void menuJogadores(Scanner sc) {
 
         int op = -1;
@@ -85,7 +85,7 @@ public class Main {
         }
     }
 
-    // ------------------ ALDEÕES ------------------
+    // ALDEÕES
     private static void menuAldeoes(Scanner sc) {
 
         int op = -1;
@@ -115,7 +115,7 @@ public class Main {
         }
     }
 
-    // ------------------ ANIMAIS ------------------
+    // ANIMAIS
     private static void menuAnimais(Scanner sc) {
 
         int op = -1;
@@ -146,7 +146,7 @@ public class Main {
     }
 
 
-    // ------------------ INVENTÁRIO ------------------
+    // INVENTÁRIO
     private static void menuInventario(Scanner sc) {
 
         int op = -1;
@@ -177,7 +177,7 @@ public class Main {
     }
 
 
-    // ------------------ ITENS ------------------
+    // ITENS
     private static void menuItens(Scanner sc) {
 
         int op = -1;
@@ -208,7 +208,7 @@ public class Main {
     }
 
 
-    // ------------------ HABILIDADES ------------------
+    // HABILIDADES
     private static void menuHabilidades(Scanner sc) {
 
         int op = -1;
@@ -239,7 +239,7 @@ public class Main {
     }
 
 
-    // ------------------ AMIZADES ------------------
+    // AMIZADES
     private static void menuAmizades(Scanner sc) {
 
         int op = -1;
@@ -271,9 +271,7 @@ public class Main {
         }
     }
 
-    // =============================================
-    // =============== CRUD HELPERS ================
-    // =============================================
+    // CRUD HELPERS
 
     // ---- Jogador ----
     private static void inserirJogador(Scanner sc) {
